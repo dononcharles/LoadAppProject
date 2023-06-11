@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Load App</string>
+    <string name="app_description">Download files from Internet</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="notification_title">Udacity: Android Kotlin Nanodegree </string>
+    <string name="notification_description">The Project 3 repository is downloaded</string>
+    <string name="notification_button">See changes</string>
+
+    <string name="button_name">Click me</string>
+    <string name="button_loading">We are loading </string>
+    <string name="title_activity_detail">DetailActivity</string>
+
+    <string name="glide_download_link_info">Glide - Image Loading Library by BumpTech</string>
+    <string name="https_github_com_bumptech_glide">https://github.com/bumptech/glide</string>
+
+    <string name="start_project_link_info">LoadApp - Current repository by Udacity</string>
+    <string name="https_github_com_udacity_nd940_c3_advanced_android_programming_project_starter">https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip</string>
+
+    <string name="retrofit_download_link_info">Retrofit - Type-safe HTTP client for Android and Java by Square, Inc</string>
+    <string name="https_github_com_square_retrofit">https://github.com/square/retrofit/archive/refs/heads/master.zip</string>
+
+    <string name="please_select_file_to_download">Please select file to download</string>
+
+    <string name="success">Success</string>
+    <string name="fail">Fail</string>
+    <string name="download_failed">Download failed. Please retry.</string>
+    <string name="downloaded_file_details">Downloaded File Details</string>
+    <string name="please_fill_all_fields">Please fill all fields or invalid file link</string>
+    <string name="add_file_to_download">Add File to Download</string>
+    <string name="you_can_not_get_notified">You can not get notified.</string>
+</resources>
