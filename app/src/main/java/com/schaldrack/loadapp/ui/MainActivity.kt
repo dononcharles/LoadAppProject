@@ -86,6 +86,9 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(receiver)
     }
 
+    /**
+     * Process status of download file and show notification
+     */
     private val receiver = object : BroadcastReceiver() {
         @SuppressLint("Range")
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -107,9 +110,11 @@ class MainActivity : AppCompatActivity() {
                     notificationManager.sendNotification(
                         messageBody = downloadStorage?.let { statusMessage(it, status) } ?: getString(R.string.download_failed),
                         applicationContext = applicationContext,
-                        downloadedFileName = getSelectedFile().second,
+                        downloadedFileName = downloadFileName.toString().replace(FILE_EXTENSION, ""),
                         status = if (success) getString(R.string.success) else getString(R.string.fail),
                     )
+
+                    binding.contentMain.radioGroup.clearCheck()
                 }
             } else {
                 binding.contentMain.downloadBtn.setLoadingButtonState(ButtonState.Completed)
@@ -214,8 +219,8 @@ class MainActivity : AppCompatActivity() {
             .setTitle(getString(R.string.add_file_to_download))
             .setCancelable(false)
             .setPositiveButton(android.R.string.ok) { dia, _ ->
-                val isUrlValid = Patterns.WEB_URL.matcher(linkEt?.text.toString()).matches()
-                if (linkEt?.text.toString().isNotBlank() && nameEt?.text.toString().isNotBlank() && isUrlValid) {
+                val isUrlValid = Patterns.WEB_URL.matcher(linkEt.text.toString()).matches()
+                if (linkEt.text.toString().isNotBlank() && nameEt.text.toString().isNotBlank() && isUrlValid) {
                     download(Pair(linkEt?.text.toString(), nameEt?.text.toString()))
                     dia.dismiss()
                 } else {
