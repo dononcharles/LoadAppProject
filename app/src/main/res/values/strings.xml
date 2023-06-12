@@ -30,4 +30,8 @@
     <string name="please_fill_all_fields">Please fill all fields or invalid file link</string>
     <string name="add_file_to_download">Add File to Download</string>
     <string name="you_can_not_get_notified">You can not get notified.</string>
+    <string name="accept">Accept</string>
+    <string name="deny">Deny</string>
+    <string name="permission_required">Permission required</string>
+    <string name="permission_required_to_save_file_to_your_device">Permission required to save file to your device</string>
 </resources>

@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.please_select_file_to_download), Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            download(getSelectedFile())
+            checkPermissionsBeforeDownload(getSelectedFile())
         }
     }
 
@@ -123,6 +123,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkPermissionsBeforeDownload(selectedFile: Pair<String, String>) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestWritePermissionLauncher(selectedFile).launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            } else {
+                download(selectedFile)
+            }
+        } else { // API level is 29 or higher
+            download(selectedFile)
+        }
+    }
+
     /**
      * first from Pair is the URL
      * second from Pair is the description oder file name
@@ -172,7 +184,7 @@ class MainActivity : AppCompatActivity() {
         private const val FILE_EXTENSION = ".zip"
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+    private val requestNotificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             println("Notification granted")
         } else {
@@ -183,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 
@@ -221,7 +233,7 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton(android.R.string.ok) { dia, _ ->
                 val isUrlValid = Patterns.WEB_URL.matcher(linkEt.text.toString()).matches()
                 if (linkEt.text.toString().isNotBlank() && nameEt.text.toString().isNotBlank() && isUrlValid) {
-                    download(Pair(linkEt?.text.toString(), nameEt?.text.toString()))
+                    checkPermissionsBeforeDownload(Pair(linkEt?.text.toString(), nameEt?.text.toString()))
                     dia.dismiss()
                 } else {
                     showToast(getString(R.string.please_fill_all_fields))
@@ -233,5 +245,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun requestWritePermissionLauncher(selectedFile: Pair<String, String>) = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            download(selectedFile)
+        } else {
+            Snackbar.make(binding.root, "Write permission is required", Snackbar.LENGTH_LONG).show()
+        }
     }
 }
